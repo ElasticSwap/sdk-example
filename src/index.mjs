@@ -35,10 +35,12 @@ async function main () {
     provider,
     storageAdapter
   });
+  await sdk.awaitInitialized();
   const exchange = await sdk.exchangeFactory.exchange(BASE_TOKEN, QUOTE_TOKEN);
   const baseTokenQtyToSwap = ethers.utils.parseUnits("10", 9) // 10 AMPL (w/ 9 decimals)
-  const expectedOutput = await exchange.calculateQuoteTokenQty(baseTokenQtyToSwap, 1);
-  console.log(expectedOutput.toString()); 
+  console.log(await exchange.TOTAL_LIQUIDITY_FEE()) // broken here....not sure why
+  //const expectedOutput = await exchange.calculateQuoteTokenQty(baseTokenQtyToSwap, 1);
+  // console.log(expectedOutput.toString()); 
 }
 
 main()

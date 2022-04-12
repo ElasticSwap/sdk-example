@@ -41,7 +41,6 @@ async function main () {
   console.log(expectedOutput.toString()); 
 }
 
-
 main()
   .then(() => process.exit(0))
   .catch((error) => {

@@ -7,6 +7,9 @@
   "author": "0xean",
   "license": "GPL-3.0",
   "private": true,
+  "scripts": {
+    "start": "node --experimental-json-modules ./src/index.mjs"
+  },
   "dependencies": {
     "@elasticswap/elasticswap": "^0.0.11",
     "@elasticswap/sdk": "^0.0.11",

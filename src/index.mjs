@@ -52,8 +52,9 @@ async function main () {
     expectedOutput.toString()
   ); 
 
-  // const ethersExchange = new ethers.Contract(exchange.address, exchangeArtifacts.abi);
-  // console.log(await ethersExchange.internalBalances());
+   const ethersExchange = new ethers.Contract(exchange.address, exchangeArtifacts.abi, provider);
+   const rawInternalBalances = await ethersExchange.internalBalances();
+   console.log(rawInternalBalances[0].toString(), rawInternalBalances[1].toString());
 
 }
 

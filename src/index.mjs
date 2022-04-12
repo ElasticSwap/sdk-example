@@ -2,6 +2,7 @@ import customFetch from 'node-fetch';
 import { SDK } from '@elasticswap/sdk';
 import { ethers } from 'ethers';
 import deploymentsArtifacts from '@elasticswap/elasticswap/artifacts/deployments.json' assert { type: 'json'};
+import exchangeArtifacts from '@elasticswap/elasticswap/artifacts/src/contracts/Exchange.sol/Exchange.json' assert { type: 'json'};
 import LocalStorageAdapterMock from './LocalStorageAdapterMock.mjs';
 
 const RPC_URL = 'https://api.avax.network/ext/bc/C/rpc';
@@ -17,6 +18,10 @@ async function main () {
   const deployments = {};
 
   contracts[chainHex] = deploymentsArtifacts[chainId][0].contracts;
+  contracts[chainHex].Exchange = {
+    abi: exchangeArtifacts.abi
+  }
+
   deployments[chainId] = [{
      chainId,
      contracts: contracts[chainHex],
@@ -38,9 +43,8 @@ async function main () {
   await sdk.awaitInitialized();
   const exchange = await sdk.exchangeFactory.exchange(BASE_TOKEN, QUOTE_TOKEN);
   const baseTokenQtyToSwap = ethers.utils.parseUnits("10", 9) // 10 AMPL (w/ 9 decimals)
-  console.log(await exchange.TOTAL_LIQUIDITY_FEE()) // broken here....not sure why
-  //const expectedOutput = await exchange.calculateQuoteTokenQty(baseTokenQtyToSwap, 1);
-  // console.log(expectedOutput.toString()); 
+  const expectedOutput = await exchange.calculateQuoteTokenQty(baseTokenQtyToSwap, 1);
+  console.log(expectedOutput.toString()); 
 }
 
 main()

@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@elasticswap/elasticswap@0.0.11", "@elasticswap/elasticswap@^0.0.11":
+"@elasticswap/elasticswap@^0.0.11":
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/@elasticswap/elasticswap/-/elasticswap-0.0.11.tgz#259352d3bfabf687110374a78c3651c78a771f7a"
   integrity sha512-XDxlOgGedRS8706LopOawinAwCMlG4jx7VluVAANRW0M/uoqV2z4WPp+AjxknvegM2TPjkxYvw3n6MhodDSJ4Q==
@@ -18,18 +18,31 @@
     hardhat-gas-reporter "^1.0.4"
     solidity-coverage "^0.7.17"
 
-"@elasticswap/sdk@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@elasticswap/sdk/-/sdk-0.0.11.tgz#727cd58387db67526d3393104f9a2295b4469893"
-  integrity sha512-y6Dl1eVxCNnKR6FU/78ejC0pHdMr1QqZ2uM6CcLkLAhcMENpk5DtUURQABY8U6oXW3yfhO9G/v8HFZprEO3MSQ==
+"@elasticswap/sdk@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@elasticswap/sdk/-/sdk-0.0.12.tgz#c6e4a8be42c04abbf17c938f7d6f6c9b381d8d92"
+  integrity sha512-1cNH19nxxyKF50eestLV60tnkcapV+h5CR3Y3iwrizqzwmq16A9ZbmGih42W41YnbbNUUP9mQK6zEMGfjfn0Vg==
   dependencies:
-    "@elasticswap/elasticswap" "0.0.11"
     bignumber.js "^9.0.1"
     bnc-notify "^1.9.1"
     ethers "^5.5.1"
     ethers-multicall "^0.2.2"
     is-plain-object "^5.0.0"
     rxjs "^7.4.0"
+
+"@elasticswap/token@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@elasticswap/token/-/token-0.0.3.tgz#b6508a12f0ffd5c7ad31a3674077fb077cb7b9df"
+  integrity sha512-OSV8H7SjYWq7x0NaXUtYNBJiG4Xutsu1IuIIR0MGQrfdGQojj5BhK5/pg2zheP4x7F7sz5k3u4pNT3P0YB2AOg==
+  dependencies:
+    "@nomiclabs/hardhat-ethers" "^2.0.2"
+    "@nomiclabs/hardhat-waffle" "^2.0.1"
+    "@openzeppelin/contracts" "^4.5.0"
+    bignumber.js "^9.0.2"
+    hardhat-contract-sizer "^2.0.3"
+    hardhat-deploy "^0.10.6"
+    hardhat-gas-reporter "^1.0.4"
+    solidity-coverage "^0.7.17"
 
 "@ethereumjs/common@^2.3.0", "@ethereumjs/common@^2.4.0", "@ethereumjs/common@^2.6.3":
   version "2.6.3"

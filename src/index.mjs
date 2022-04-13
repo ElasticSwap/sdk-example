@@ -1,8 +1,10 @@
 import customFetch from 'node-fetch';
 import { SDK } from '@elasticswap/sdk';
 import { ethers } from 'ethers';
-import deploymentsArtifacts from '@elasticswap/elasticswap/artifacts/deployments.json' assert { type: 'json'};
-import exchangeArtifacts from '@elasticswap/elasticswap/artifacts/src/contracts/Exchange.sol/Exchange.json' assert { type: 'json'};
+
+import protocolDeployments from '@elasticswap/elasticswap/artifacts/deployments.json' assert { type: 'json'};
+import tokenDeployments from '@elasticswap/token/artifacts/deployments.json' assert { type: 'json'};
+import exchangeArtifact from '@elasticswap/elasticswap/artifacts/src/contracts/Exchange.sol/Exchange.json' assert { type: 'json'};
 import LocalStorageAdapterMock from './LocalStorageAdapterMock.mjs';
 
 const RPC_URL = 'https://api.avax.network/ext/bc/C/rpc';
@@ -14,24 +16,10 @@ async function main () {
   const storageAdapter = new LocalStorageAdapterMock();
   const chainId = '43114';
   const chainHex = '0xa86a';
-  const contracts = {};
-  const deployments = {};
-
-  contracts[chainHex] = deploymentsArtifacts[chainId][0].contracts;
-  contracts[chainHex].Exchange = {
-    abi: exchangeArtifacts.abi
-  }
-
-  deployments[chainId] = [{
-     chainId,
-     contracts: contracts[chainHex],
-     name: 'avalanche',
-  }];
 
   const env = {
     networkId: chainId,
-    contracts,
-    deployments,
+    contracts: [exchangeArtifact, protocolDeployments, tokenDeployments],
   }
 
   const sdk = new SDK({
@@ -40,21 +28,30 @@ async function main () {
     provider,
     storageAdapter
   });
+  
   await sdk.awaitInitialized();
-  const exchange = await sdk.exchangeFactory.exchange(BASE_TOKEN, QUOTE_TOKEN);
-  const baseTokenQtyToSwap = ethers.utils.parseUnits("10", 9) // 10 AMPL (w/ 9 decimals)
-  const expectedOutput = await exchange.calculateQuoteTokenQty(baseTokenQtyToSwap, 1);
-  console.log(exchange.address);
-  const internalBal = await exchange.internalBalances();
-  console.log(
-    internalBal.baseTokenReserveQty.toString(), 
-    internalBal.quoteTokenReserveQty.toString(), 
-    expectedOutput.toString()
-  ); 
+  const LISTS = [
+    'https://raw.githubusercontent.com/ElasticSwap/tokenlists/master/defi.tokenlist.json',
+    'https://raw.githubusercontent.com/ElasticSwap/tokenlists/master/elastic.tokenlist.json',
+    'https://raw.githubusercontent.com/ElasticSwap/tokenlists/master/stablecoin.tokenlist.json',
+  ];
+  await Promise.all(LISTS.map((url) => sdk.tokenList(url)));
 
-   const ethersExchange = new ethers.Contract(exchange.address, exchangeArtifacts.abi, provider);
-   const rawInternalBalances = await ethersExchange.internalBalances();
-   console.log(rawInternalBalances[0].toString(), rawInternalBalances[1].toString());
+
+  const exchange = await sdk.exchangeFactory.exchange(BASE_TOKEN, QUOTE_TOKEN);
+  // const baseTokenQtyToSwap = ethers.utils.parseUnits("10", 9) // 10 AMPL (w/ 9 decimals)
+  // const expectedOutput = await exchange.calculateQuoteTokenQty(baseTokenQtyToSwap, 1);
+  // console.log(exchange.address);
+  // const internalBal = await exchange.internalBalances();
+  // console.log(
+  //   internalBal.baseTokenReserveQty.toString(), 
+  //   internalBal.quoteTokenReserveQty.toString(), 
+  //   expectedOutput.toString()
+  // ); 
+
+  // const ethersExchange = new ethers.Contract(exchange.address, exchangeArtifacts.abi, provider);
+  // const rawInternalBalances = await ethersExchange.internalBalances();
+  // console.log(rawInternalBalances[0].toString(), rawInternalBalances[1].toString());
 
 }
 

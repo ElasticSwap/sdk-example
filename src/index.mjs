@@ -17,6 +17,9 @@ async function main () {
   const chainId = '43114';
   const chainHex = '0xa86a';
 
+  // delay to make sure the provider is fully connected
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   const env = {
     networkId: chainId,
     contracts: [exchangeArtifact, protocolDeployments, tokenDeployments],
@@ -30,13 +33,14 @@ async function main () {
   });
   
   await sdk.awaitInitialized();
+
   const LISTS = [
     'https://raw.githubusercontent.com/ElasticSwap/tokenlists/master/defi.tokenlist.json',
     'https://raw.githubusercontent.com/ElasticSwap/tokenlists/master/elastic.tokenlist.json',
     'https://raw.githubusercontent.com/ElasticSwap/tokenlists/master/stablecoin.tokenlist.json',
   ];
-  await Promise.all(LISTS.map((url) => sdk.tokenList(url)));
 
+  await Promise.all(LISTS.map((url) => sdk.tokenList(url)));
 
   const exchange = await sdk.exchangeFactory.exchange(BASE_TOKEN, QUOTE_TOKEN);
   // const baseTokenQtyToSwap = ethers.utils.parseUnits("10", 9) // 10 AMPL (w/ 9 decimals)

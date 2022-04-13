@@ -43,8 +43,8 @@ async function main () {
   await Promise.all(LISTS.map((url) => sdk.tokenList(url)));
 
   const exchange = await sdk.exchangeFactory.exchange(BASE_TOKEN, QUOTE_TOKEN);
-  // const baseTokenQtyToSwap = ethers.utils.parseUnits("10", 9) // 10 AMPL (w/ 9 decimals)
-  // const expectedOutput = await exchange.calculateQuoteTokenQty(baseTokenQtyToSwap, 1);
+  const baseTokenQtyToSwap = ethers.utils.parseUnits("10", 9) // 10 AMPL (w/ 9 decimals)
+  const expectedOutput = await exchange.calculateQuoteTokenQty(baseTokenQtyToSwap, 1);
   // console.log(exchange.address);
   // const internalBal = await exchange.internalBalances();
   // console.log(

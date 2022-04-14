@@ -36,7 +36,7 @@ async function main () {
   await Promise.all(TOKEN_LISTS.map((url) => sdk.tokenList(url)));
 
   const exchange = await sdk.exchangeFactory.exchange(BASE_TOKEN, QUOTE_TOKEN);
-  const baseTokenQtyToSwap = "10.5";
+  const baseTokenQtyToSwap = 10.5;
   const expectedOutput = await exchange.getQuoteTokenQtyFromBaseTokenQty(baseTokenQtyToSwap);
   console.log(
     `Swapping ${baseTokenQtyToSwap} ${exchange.baseToken.symbol} for ${expectedOutput.toString()} ${exchange.quoteToken.symbol}`

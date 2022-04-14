@@ -13,6 +13,10 @@ const QUOTE_TOKEN = "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664" // USDC.e
 
 async function main () {
   const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+
+   // delay to make sure the provider is fully connected
+   await new Promise((resolve) => setTimeout(resolve, 1000));
+   
   const storageAdapter = new LocalStorageAdapterMock();
   const env = {
     contracts: [exchangeArtifact, protocolDeployments, tokenDeployments],

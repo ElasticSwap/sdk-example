@@ -14,14 +14,7 @@ const QUOTE_TOKEN = "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664" // USDC.e
 async function main () {
   const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
   const storageAdapter = new LocalStorageAdapterMock();
-  const chainId = '43114';
-  const chainHex = '0xa86a';
-
-  // delay to make sure the provider is fully connected
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
   const env = {
-    networkId: chainId,
     contracts: [exchangeArtifact, protocolDeployments, tokenDeployments],
   }
 
@@ -34,29 +27,25 @@ async function main () {
   
   await sdk.awaitInitialized();
 
-  const LISTS = [
+  const TOKEN_LISTS = [
     'https://raw.githubusercontent.com/ElasticSwap/tokenlists/master/defi.tokenlist.json',
     'https://raw.githubusercontent.com/ElasticSwap/tokenlists/master/elastic.tokenlist.json',
     'https://raw.githubusercontent.com/ElasticSwap/tokenlists/master/stablecoin.tokenlist.json',
   ];
 
-  await Promise.all(LISTS.map((url) => sdk.tokenList(url)));
+  await Promise.all(TOKEN_LISTS.map((url) => sdk.tokenList(url)));
 
   const exchange = await sdk.exchangeFactory.exchange(BASE_TOKEN, QUOTE_TOKEN);
-  const baseTokenQtyToSwap = ethers.utils.parseUnits("10", 9) // 10 AMPL (w/ 9 decimals)
-  const expectedOutput = await exchange.calculateQuoteTokenQty(baseTokenQtyToSwap, 1);
-  // console.log(exchange.address);
-  // const internalBal = await exchange.internalBalances();
-  // console.log(
-  //   internalBal.baseTokenReserveQty.toString(), 
-  //   internalBal.quoteTokenReserveQty.toString(), 
-  //   expectedOutput.toString()
-  // ); 
+  const baseTokenQtyToSwap = "10.5";
+  const expectedOutput = await exchange.getQuoteTokenQtyFromBaseTokenQty(baseTokenQtyToSwap);
+  console.log(
+    `Swapping ${baseTokenQtyToSwap} ${exchange.baseToken.symbol} for ${expectedOutput.toString()} ${exchange.quoteToken.symbol}`
+  );
 
-  // const ethersExchange = new ethers.Contract(exchange.address, exchangeArtifacts.abi, provider);
-  // const rawInternalBalances = await ethersExchange.internalBalances();
-  // console.log(rawInternalBalances[0].toString(), rawInternalBalances[1].toString());
-
+  const reverseOutput = await exchange.getBaseTokenQtyFromQuoteTokenQty(expectedOutput);
+  console.log(
+    `Swapping ${expectedOutput.toString()} ${exchange.quoteToken.symbol} for ${reverseOutput.toString()} ${exchange.baseToken.symbol}`
+  );
 }
 
 main()

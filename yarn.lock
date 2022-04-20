@@ -18,10 +18,10 @@
     hardhat-gas-reporter "^1.0.4"
     solidity-coverage "^0.7.17"
 
-"@elasticswap/sdk@^0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@elasticswap/sdk/-/sdk-0.0.15.tgz#69e2bd5d18afc007ac0bca66e20cfdc17490456e"
-  integrity sha512-p0H4nCCOZnOV2cvuZa2SDo1ljlgQY6uOEJrN8Eu2GF57hTEwZHufKhKGNjff/lYQpJwhsxoPmvM/JEiDt3eS9w==
+"@elasticswap/sdk@^0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@elasticswap/sdk/-/sdk-0.0.20.tgz#45d43f1dd4cf4627b7010ea2074c8006c42cf608"
+  integrity sha512-2IdOGHDuoYxnyOGgL6T5xnlZq3CrdqxDEA6KDuETemqVJC1uCetLQTf8C5hYr7L7hAbn8h2ibW/1ReciiozI3A==
   dependencies:
     bignumber.js "^9.0.1"
     bnc-notify "^1.9.1"
